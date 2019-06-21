@@ -1,0 +1,16 @@
+<h1><%= File.basename(@document.image.to_s) %> の詳細ページ</h1>
+<p><%=image_tag(@document.image_url) if @document.image.present?%></p>
+<p><%= simple_format @document.content %></p>
+
+<div>
+  <textarea id="fe_text" name="" rows="7" cols="100">コピー領域</textarea>
+  <button class='my_clip_button' data-clipboard-target='fe_text' data-clipboard-text='Default clipboard text from attribute' id='d_clip_button'>
+    <b>コピーする</b>
+  </button>
+</div>
+<% if current_user == @document.user %>
+<%= link_to 'このテキストを編集する', edit_document_path(@document) ,class: 'btn btn-success '%>
+<%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary '%>
+<% else %>
+<%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary '%>
+<% end %>

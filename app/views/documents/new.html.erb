@@ -1,0 +1,28 @@
+<h1>画像の新規登録ページ</h1>
+<script>
+      window.addEventListener("load", function(){
+         
+        if (!window.File){
+          result.innerHTML = "File API 使用不可";
+          return;
+        }
+         
+        document.getElementById("imageFile").addEventListener("change", function(){
+          var reader = new FileReader();
+           
+          reader.onload = function(event){
+            document.getElementById("image").src = reader.result;
+          }
+          var file = document.getElementById("imageFile").files[0];
+          reader.readAsDataURL(file);
+        }, true);
+      }, true);
+</script>
+
+<%= form_with(model: @document, local: true) do |f| %>
+    <div class="form-group">
+    　<%= f.label 'テキストで読み取りたい画像をアップロードしてね' %>
+      <br><%= f.file_field :image, class: 'form_control',type:"file", accept:"image/*;capture=camera" ,id:"imageFile" %>
+    </div>
+    <%= f.submit 'Upload & Image to text', class: 'btn btn-primary' %>
+<% end %>

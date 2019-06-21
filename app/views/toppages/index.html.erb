@@ -1,0 +1,11 @@
+<% if logged_in? %>
+ <%= render 'documents/documents', documents: @documents %>
+  
+<% else %>
+  <div class="center jumbotron">
+    <div class="text-center">
+      <h1>ぶんしょかくん</h1>
+      <%= link_to 'Sign up now!', signup_path, class: 'btn btn-lg btn-primary' %>
+    </div>
+  </div>
+<% end %>

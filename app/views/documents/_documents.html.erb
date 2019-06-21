@@ -1,0 +1,23 @@
+<ul class="list-unstyled">
+  <% documents.each do |document| %>
+    <li class="media mb-3">
+      <img class="mr-2 rounded" src="<%= gravatar_url(document.user, { size: 50 }) %>" alt="">
+      <div class="media-body">
+        <div>
+          <%= link_to document.user.name, documents_ichiran_user_path(document.user) %> <span class="text-muted">posted at <%= document.created_at %></span>
+        </div>
+        <div>
+          <p class="mb-0"><%= document.content.truncate(50) %></p>
+          <p class="mb-0"><%= link_to File.basename(document.image.to_s), document_path(document) %></p>
+        </div>
+        <div class="btn-group" role="group" aria-label="ボタングループサンプル">
+          <% if current_user == document.user %>
+            <%= link_to "Delete", document , method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-sm ml-1' %>
+          <% end %>
+        </div>
+      </div>
+    </li>
+  <% end %>
+  <%= paginate documents %>
+</ul>
+<%= link_to 'Add new image', new_document_path(@user) , class: "btn btn-primary" %>

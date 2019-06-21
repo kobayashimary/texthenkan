@@ -1,0 +1,19 @@
+
+
+　<ul class="list-unstyled">
+  <% @documents.each do |document| %>
+    <li class="media mb-3">
+      <img class="mr-2 rounded" src="<%= gravatar_url(document.user, { size: 50 }) %>" alt="">
+      <div class="media-body">
+        <div>
+          <%= link_to document.user.name, documents_ichiran_user_path(document.user) %> <span class="text-muted">posted at <%= document.created_at %></span>
+        </div>
+        <div>
+          <p class="mb-0"><%= document.content.truncate(50) %></p>
+          <p class="mb-0"><%= link_to File.basename(document.image.to_s), document_path(document) %></p>
+        </div>
+      </div>
+    </li>
+  <% end %>
+  <%= paginate @documents %>
+</ul>
