@@ -62,9 +62,6 @@ gem 'google-cloud-vision'
 
 gem 'google-api-client'
 
-gem 'dotenv-rails'
-
-gem 'zeroclipboard-rails'
 
 group :production do
   gem 'pg', '>= 0.18', '< 2.0'
