@@ -1,5 +1,4 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+
 <div class="text-center">
   <h1>Sign up</h1>
 </div>
@@ -8,6 +7,8 @@
   <div class="col-sm-6 offset-sm-3">
 
     <%= form_with(model: @user, local: true) do |f| %>
+   
+    
      <%= render 'layouts/error_messages', model: f.object %>
       
       <div class="form-group">
@@ -34,3 +35,4 @@
     <% end %>
   </div>
 </div>
+
