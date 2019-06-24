@@ -15,13 +15,3 @@
 //= require turbolinks
 //= require_tree .
 
-$(function() {
-  // ZeroClipboard
-  var clip = new ZeroClipboard();
-  clip.glue($(".copy-to-clipboard"));
-
-  clip.on("dataRequested", function (client, args) {
-    var msg = "Copied to clipboard!";
-    alert(msg);
-  });
-});

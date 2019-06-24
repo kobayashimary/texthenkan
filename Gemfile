@@ -62,7 +62,7 @@ gem 'google-cloud-vision'
 
 gem 'google-api-client'
 
-
+gem 'dotenv-rails'
 
 gem 'zeroclipboard-rails'
 
