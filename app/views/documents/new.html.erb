@@ -4,15 +4,16 @@
 
 
 <%= form_with(model: @document, local: true) do |f| %>
+<%= render 'layouts/error_messages', model: f.object %>
 
 <div class="row">
   <div class="col-sm-6 offset-sm-3 ">
     <div class="form-group'>
     　<%= f.label 'テキストで読み取りたい画像をアップロードしよう' %>
-      <br><%= f.file_field :image, class: 'form_control block' %>
+      <br><%= f.file_field :image, class: 'form_control block', required: true%>
       </div>
+      
       <br><%= f.submit 'Upload & Image to text', class: 'btn btn-primary btn-block' %>
-    
   </div>
 </div>  
 <% end %>

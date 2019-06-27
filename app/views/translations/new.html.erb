@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-sm-6 offset-sm-3">
+
+    <%= form_with(model: @translation,  local: true) do |f| %>
+    
+
+
+      <div class="form-group">
+        <%= f.label :result, 'Password' %>
+        <%= f.text_field :result ,value: Document.last.diff ,class: 'form-control' %>
+      </div>
+
+      <%= f.submit 'Log in', class: 'btn btn-primary btn-block' %>
+    <% end %>
+
+  
+  </div>
+</div>

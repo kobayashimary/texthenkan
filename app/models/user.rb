@@ -6,6 +6,6 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   has_secure_password
   
-  
-  has_many :documents
+  mount_uploader :thumb, ThumbUploader
+  has_many :documents, dependent: :destroy
 end

@@ -1,0 +1,42 @@
+<div class="col-md-10 col-md-offset-2">
+  <h1>プロフィール画像の登録・変更</h1>
+</div>
+<div class="col-md-10 col-md-offset-2">
+  <h3>現在のプロフィール画像</h3>
+
+
+  <% if @user.thumb? %>
+      <% if @user.thumb.nil? %>
+           <img class="mr-2 rounded" src="<%= gravatar_url(@user, { size: 50 }) %>" alt="">
+      <% else%>   
+            <p><%= image_tag @user.thumb.thumb100.url%></p>
+    <% end %>        
+  <% else %>
+    <img class="mr-2 rounded" src="<%= gravatar_url(@user, { size: 50 }) %>" alt="">
+  <% end %>
+  
+<%= form_for @user do |f| %>
+   <%= f.file_field :thumb ,class:"thumb" ,required: true%><br>
+  <%= f.submit 'プロフィール画像を変更する', class: 'btn btn-primary mt-2' %>
+<% end %>
+<%= link_to "プロフィール画像を削除する", @user, thumb: gravatar_url(@user, { size: 50 }) , method: :delete, class: 'btn btn-warning mt-2' %><br>
+<%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary mt-2 '%>
+</div>
+<script>
+$(document).ready(function () {
+   $('.thumb').fileinput({
+       showPreview: true,
+       showUpload: false,
+       maxFileCount: 1,
+       browseClass: 'btn btn-info fileinput-browse-button',
+       browseIcon: '',
+       browseLabel: ' ファイル選択',
+       removeClass: 'btn btn-warning',
+       removeIcon: '',
+       removeLabel: ' キャンセル',
+       allowedFileExtensions: ['xls', 'xlsx'],
+       msgInvalidFileExtension: '拡張子が「xls」「xlsx」のファイルのみ有効です。',
+       msgValidationError: '<span class = "text-danger"> Excelファイルのみ有効です。 </span>'
+    });
+});
+</script>

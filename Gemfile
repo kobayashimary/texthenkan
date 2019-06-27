@@ -66,3 +66,11 @@ gem 'google-api-client'
 group :production do
   gem 'pg', '>= 0.18', '< 2.0'
 end
+
+gem 'diff-lcs', '~> 1.2', '>= 1.2.5'
+
+gem 'rmagick'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-bootstrap-fileinput', '~> 2.5.0'
+end

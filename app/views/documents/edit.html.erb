@@ -3,8 +3,8 @@
 
 <%= form_with(model: @document, local: true) do |f| %>
   <div class="form-group ">
-  <%= f.label :content, 'テキスト'%>
-  <br><%= f.text_area :content ,class: 'form-control' ,rows:"15" %>
+  <%= f.label :diff, 'テキスト'%>
+  <br><%= f.text_area :diff ,class: 'form-control' ,rows:"15" %>
   </div>
   <p><%= f.submit '登録',class: 'btn btn-primary' %></p>
 <% end %>

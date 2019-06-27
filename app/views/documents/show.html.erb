@@ -1,11 +1,196 @@
+<div class="text-center">
 <h1><%= File.basename(@document.image.to_s) %> の詳細ページ</h1>
-<p><%=image_tag(@document.image_url) if @document.image.present?%></p>
-<p><%= simple_format @document.content %></p>
+<%=image_tag @document.image.url %> 
+</div>
+<%if @document.content.nil?%>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card" >
+        <div class="card-body">
+          <h4 class="card-title">原文</h4>
+          <p class="card-text">文字を読み取ることができなかったよ</p>
+          <% if current_user == @document.user %>
+            <%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary mt-2 '%>
+            <% else %>
+            <%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary '%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div><br>
+</div>  
+<%else%>
+<%hairetu=[]%>
+<%@document.diff.split(/\r|\r\n|\n/).each do |str|%>
+<%a=str.strip%>
+<%hairetu.push(a)%>
+<%hairetu.delete("")%>
+<%end%>
 
 
+
+<style type="text/css">
+     
+      .blue {
+        font-weight: bold;
+        color: blue;
+      }
+      .red {
+        font-weight: bold;
+        color: crimson;
+      }
+</style>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card" >
+        <div class="card-body">
+          <h4 class="card-title">原文</h4>
+          <p class="copyTarget1 card-text" <%= simple_format @document.content %></p>
+          <button class="btn btn-info copyBtn1 ">原文をコピー</button><br>
+          <% if current_user == @document.user %>
+            <%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary mt-2 '%>
+            <% else %>
+            <%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary mt-2'%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">編集用テキスト</h4>
+          <p class="copyTarget card-text" <%= simple_format @document.diff %></p>
+          <button class="btn btn-info copyBtn mt-2">編集テキストをコピー</button> 
+          <% if current_user == @document.user %>
+            <%= link_to 'このテキストを編集する', edit_document_path(@document) ,class: 'btn btn-success mt-2'%>
+            <%= form_with(url: translations_path , local: true) do |f| %>
+              <%= hidden_field_tag :document_id, @document.id %>
+              <%= hidden_field_tag :result, @document.diff %>
+              <%= f.select :language, [["英語", "en"], ["日本語", "ja"],  ["中国語(繁体)", "zh-TW"] ,["中国語(簡体)", "zh-CN"]],  :prompt => "原文の言語を選択してください",require: true %>
+              <%= f.select :target, [["英語", "en"], ["日本語", "ja"],  ["中国語(繁体)", "zh-TW"] ,["中国語(簡体)", "zh-CN"] ],  :prompt => "翻訳する言語を選択してください" ,require: true%>
+              <%= f.submit '翻訳', class: 'btn btn-primary mt-2' %>
+            <% end %>
+            <%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary mt-2 '%>
+            <% else %>
+            <%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary mt-2'%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div> <br> 
+  <div class="row">  
+    <div class="col-sm-12">
+      <div class="card" >
+        <div class="card-body">
+          <h4 class="card-title">編集状況</h4>
+          <p class="copyTarget1 card-text">
+            <%require 'diff/lcs'%>
+            <%diffs=Diff::LCS.sdiff(@document.content.split(/\n|\r/),hairetu)%> 
+            <%diffs.each{|context_change|%>
+              <%if context_change.unchanged?%>
+              <br><span><%=context_change.old_element%></span>
+              <%elsif !context_change.old_element.nil?%>
+              <br><span class='red '><%="-"+context_change.old_element%></span>
+                <%if !context_change.new_element.nil?%>
+                  <span class='blue'><br><%="+"+context_change.new_element%></span>
+                <%end%>
+              <%elsif context_change.old_element.nil?%>
+              <span class='blue'><br><%="+"+context_change.new_element%></span>
+            <%end}.join('')%>
+          </p>
+          <% if current_user == @document.user %>
+            <%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary mt-2 '%>
+            <% else %>
+            <%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary mt-2'%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  
+  
+  <%if !@translation.nil?%>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="card-title">翻訳結果</h4>
+            
+              <p class="card-text copyTarget2" <%= simple_format @translation.result %></p>
+          <button class="btn btn-info copyBtn2 ">翻訳結果をコピー</button><br>  
+          <% if current_user == @document.user %>
+            <%= link_to '翻訳結果を編集する', edit_translation_path(@translation,result: @translation.result),class: 'btn btn-success mt-2'%>
+            <%= link_to "翻訳結果を削除する", @translation, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger  mt-2' %>
+            <%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary mt-2 '%>
+            <% else %>
+            <%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary mt-2'%>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div> <br> 
+  <%end%>
+</div>
+
+<script>
+function copyText () {
+  var $target = document.querySelector('.copyTarget1');
+  if (!$target) {
+    return false;
+  }
+  var range = document.createRange();
+  range.selectNode($target);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand('copy');
+  return false;
+}
+document.querySelector('.copyBtn1').addEventListener('click', copyText, false);
+</script>
+
+<script>
+function copyText () {
+  var $target = document.querySelector('.copyTarget');
+  if (!$target) {
+    return false;
+  }
+  var range = document.createRange();
+  range.selectNode($target);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand('copy');
+  return false;
+}
+document.querySelector('.copyBtn').addEventListener('click', copyText, false);
+</script>
+
+<script>
+function copyText () {
+  var $target = document.querySelector('.copyTarget2');
+  if (!$target) {
+    return false;
+  }
+  var range = document.createRange();
+  range.selectNode($target);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+  document.execCommand('copy');
+  return false;
+}
+document.querySelector('.copyBtn2').addEventListener('click', copyText, false);
+</script>
+
+<%end%>
+<br>
+<div class="col-sm">
 <% if current_user == @document.user %>
-<%= link_to 'このテキストを編集する', edit_document_path(@document) ,class: 'btn btn-success '%>
-<%= link_to 'アップロード一覧に戻る', root_path,class: 'btn btn-secondary '%>
-<% else %>
-<%= link_to @document.user.name+'のアップロード一覧に戻る', documents_ichiran_user_path(@document.user),class: 'btn btn-secondary '%>
+  <%= link_to "この画像を削除する", @document , method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger  ml-1' %>
 <% end %>
+</div>
+<br>
+<br>
+

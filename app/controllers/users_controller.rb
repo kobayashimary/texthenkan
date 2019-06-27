@@ -3,11 +3,9 @@ class UsersController < ApplicationController
   def index
     @users = User.order(id: :desc).page(params[:page]).per(25)
   end
-
   def new
     @user = User.new
   end
-
   def create
     @user = User.new(user_params)
 
@@ -23,11 +21,35 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @documents = @user.documents.page(params[:page])
   end
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+      
+    @user = User.find(params[:id])
+      
+    if @user.update(user_params)
+      flash[:success] = 'プロフィール画像 は正常に更新されました'
+      redirect_to root_url
+    else
+      flash.now[:danger] = 'プロフィール画像 は更新されませんでした'
+      render :edit
+    end
+  end
   
+def destroy
+  @user = User.find(params[:id])
+  @nil=nil
+  @user.update(thumb: @nil)
+  flash[:success] = 'プロフィール画像 は正常に更新されました'
+  redirect_to root_url
+end
+   
 
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation,:thumb)
   end
 end

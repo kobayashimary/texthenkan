@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_20_083630) do
+ActiveRecord::Schema.define(version: 2019_06_27_015131) do
 
   create_table "documents", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "content"
@@ -18,7 +18,18 @@ ActiveRecord::Schema.define(version: 2019_06_20_083630) do
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "diff"
     t.index ["user_id"], name: "index_documents_on_user_id"
+  end
+
+  create_table "translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.text "result"
+    t.bigint "document_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "language"
+    t.string "target"
+    t.index ["document_id"], name: "index_translations_on_document_id"
   end
 
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -27,7 +38,9 @@ ActiveRecord::Schema.define(version: 2019_06_20_083630) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "thumb"
   end
 
   add_foreign_key "documents", "users"
+  add_foreign_key "translations", "documents"
 end

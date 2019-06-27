@@ -1,0 +1,14 @@
+<h1>Translations#edit</h1>
+<p>Find me in app/views/translations/edit.html.erb</p>
+
+<h1><%=@translation.result %>翻訳結果の編集ページ</h1>
+
+<%= form_with(model: @translation, local: true) do |f| %>
+  <div class="form-group ">
+  <%= f.label :result, 'テキスト'%>
+  <br><%= f.text_area :result , class: 'form-control' ,rows:"15" %>
+  </div>
+  <%= hidden_field_tag :document_id, @translation.document.id %>
+  <p><%= f.submit '登録',class: 'btn btn-primary' %></p>
+<% end %>
+

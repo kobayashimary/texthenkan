@@ -1,6 +1,21 @@
 <% if logged_in? %>
+<ul class="list-unstyled">
+    <li class="media">
+      <% if @user.thumb? %>
+        <%= link_to edit_user_path(@user) do%><p class="mr-2 rounded"><%= image_tag @user.thumb.thumb50.url %><% end %>
+      <% else %>
+        <%= link_to edit_user_path(@user) do%><img class="mr-2 rounded" src="<%= gravatar_url(@user, { size: 50 }) %>" alt=""><% end %>
+      <% end %>
+      <div class="media-body">
+        <div class="col-md-6 col-md-offset-5">
+         <h1><%=@user.name%></h1>
+        </div>
+      </div>
+    </li>
+</ul>
+
  <%= render 'documents/documents', documents: @documents %>
-  
+
 <% else %>
   <div class="center jumbotron">
     <div class="text-center">

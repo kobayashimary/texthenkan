@@ -1,19 +1,45 @@
-
-
-　<ul class="list-unstyled">
-  <% @documents.each do |document| %>
-    <li class="media mb-3">
-      <img class="mr-2 rounded" src="<%= gravatar_url(document.user, { size: 50 }) %>" alt="">
+<ul class="list-unstyled">
+    <li class="media">
+      <% if @user.thumb? %>
+        <p class="mr-2 rounded"><%= image_tag @user.thumb.thumb50.url %></p>
+      <% else %>
+        <img class="mr-2 rounded" src="<%= gravatar_url(@user, { size: 50 }) %>" alt="">
+      <% end %>
       <div class="media-body">
-        <div>
-          <%= link_to document.user.name, documents_ichiran_user_path(document.user) %> <span class="text-muted">posted at <%= document.created_at %></span>
-        </div>
-        <div>
-          <p class="mb-0"><%= document.content.truncate(50) %></p>
-          <p class="mb-0"><%= link_to File.basename(document.image.to_s), document_path(document) %></p>
+        <div class="col-md-6 col-md-offset-5">
+         <h1><%=@user.name%></h1>
         </div>
       </div>
     </li>
+</ul>
+
+<ul class="list-unstyled">
+  <% @documents.each do |document| %>
+  
+    <div class="card col-md-12 border-info">
+      <div class="row no-gutters">
+      <div class="col-md-6">
+        <p class="card-img-top rounded mx-auto d-block"><%=image_tag(document.image.thumb350.url) if document.image.present?%></p>
+      </div>
+      <div class="col-md-5">
+        <br><br>
+        <h5 class="card-title text-muted"><%= link_to File.basename(document.image.to_s), document_path(document) %></h5>
+        <%if document.content.nil?%>
+          <p class="card-text"><%= '文字読み取れなかったよ'%></p>
+        <%else%>
+        <p class="card-text"><%= document.diff.truncate(100) %></p>
+        <%end%>
+        <p class="card-text"><small class="text-muted">posted at <%= document.created_at %></small></p>
+        <% if current_user == document.user %>
+          <%= link_to "Delete", document , method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger btn-md ml-1' %>
+        <% end %>
+      </div>
+      </div>
+      <br>
+    </div>
+    <br>
   <% end %>
   <%= paginate @documents %>
 </ul>
+<br>
+<br>

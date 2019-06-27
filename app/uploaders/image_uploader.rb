@@ -12,7 +12,13 @@ class ImageUploader < CarrierWave::Uploader::Base
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
-
+  # リサイズしたり画像形式を変更するのに必要
+  include CarrierWave::RMagick
+  # サムネイルを生成する設定
+  version :thumb350 do
+    resize_and_pad(350, 290, background = :transparent, gravity = ::Magick::CenterGravity)
+  end
+  
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url(*args)
   #   # For Rails 3.1+ asset pipeline compatibility:
