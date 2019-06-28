@@ -14,7 +14,7 @@ class DocumentsController < ApplicationController
     @upload=current_user.documents.build(document_params)
     require 'google/apis/vision_v1'
     vision = Google::Apis::VisionV1::VisionService.new
-    vision.key = "AIzaSyBDt7-hHG8kDD-PhgNXeedy4_hRQmiX1YQ"
+    vision.key = ENV["vision.key"] 
     filename=File.open(@upload.image.path)
 
     request = Google::Apis::VisionV1::BatchAnnotateImagesRequest.new(

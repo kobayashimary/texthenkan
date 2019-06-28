@@ -54,7 +54,7 @@ class TranslationsController < ApplicationController
     q: q,
     target: output,
     source: input,
-    key: "AIzaSyAiqqgyxea9RVUcTbKYuQueQYziBKEFl0c"
+    key: ENV["key"]
   }
   url.query = URI.encode_www_form(params)
   res = Net::HTTP.get_response(url)
