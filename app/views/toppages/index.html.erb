@@ -1,3 +1,4 @@
+
 <% if logged_in? %>
 <ul class="list-unstyled">
     <li class="media">
@@ -13,9 +14,7 @@
       </div>
     </li>
 </ul>
-
- <%= render 'documents/documents', documents: @documents %>
-
+<%= render 'documents/documents', documents: @documents %>
 <% else %>
   <div class="center jumbotron">
     <div class="text-center">

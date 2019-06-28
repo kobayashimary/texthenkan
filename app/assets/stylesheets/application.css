@@ -13,3 +13,11 @@
  *= require_tree .
  *= require_self
  */
+.jumbotron {
+    background-image: url("tileable_wood_texture.png");
+    background-size: 100%;
+    z-index: -1;
+}
+.browm{
+   color:#A52A2A; 
+}
